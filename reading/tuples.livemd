@@ -80,7 +80,7 @@ the second element.
 </details>
 
 ```elixir
-
+{:ok, "got it!"}
 ```
 
 ## Pattern Matching
@@ -115,7 +115,8 @@ However, we can bind other values inside of a container data type, so the left a
 Now we can use these bound variables `one`, `two`, and `three` in our program.
 
 ```elixir
-one
+# one
+one === 1
 ```
 
 ```elixir
@@ -138,6 +139,7 @@ If we want to bind some of the variables in a tuple, and ignore others, we can u
 
 ```elixir
 {one, _two, three} = {1, 2, 3}
+_two
 ```
 
 You can pattern match with any kind of data. So long as the left side matches the right side. We'll cover pattern matching with other data structures in later reading material.
@@ -160,7 +162,8 @@ jewel
 </details>
 
 ```elixir
-{"gold", "treasure", "jewel"}
+{first, second, third} = {"gold", "treasure", "jewel"}
+IO.inspect(third)
 ```
 
 ## Further Reading
