@@ -56,7 +56,11 @@ blank3 = "code"
 Enter your solution below.
 
 ```elixir
+input1 = "person"
+input2 = "coffe"
+input3 = "code"
 
+IO.inspect("A programmer is a " <> input1 <> " that turns " <> input2 <> " into " <> input3)
 ```
 
 ## String Interpolation Madlib
@@ -81,7 +85,11 @@ blank3 = "foobar"
 Enter your solution below.
 
 ```elixir
+blank1 = "foo"
+blank2 = "bar"
+blank3 = "foobar"
 
+IO.inspect("#{blank1} and #{blank2} combined makes #{blank3}")
 ```
 
 ## Commit Your Progress
