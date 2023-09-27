@@ -205,6 +205,8 @@ map[:hello]
 
 ```elixir
 map = %{hello: "world"}
+IO.inspect(map.hello)
+IO.inspect(map[:hello])
 ```
 
 ### Updating Maps
@@ -241,8 +243,9 @@ initial
 You can only update existing atom key values in a map, otherwise it will cause an error.
 
 ```elixir
-initial = %{}
-%{initial | new_key: "value"}
+initial = %{new_key: "value1"}
+newinitial = %{initial | new_key: "value"}
+initial.another = "new"
 ```
 
 ### Your Turn
@@ -265,7 +268,8 @@ todo = %{title: "finish maps exercise", completed: false}
 </details>
 
 ```elixir
-
+todo = %{title: "finish maps exercises", completed: false}
+%{todo | completed: true}
 ```
 
 ## Pattern Matching
@@ -287,7 +291,24 @@ one
 This also works with non-atom key maps.
 
 ```elixir
-%{"hello" => world} = %{"hello" => "world"}
+# %{"hello" => world} = %{"hello" => "world"}
+book = %{
+  title: "Name of the Wind",
+  author: "Patrick Rothfuss",
+  description: """
+  The Name of the Wind is a fantasy novel by Patrick Rothfuss. It is the first book in the
+  Kingkiller Chronicle series and tells the story of Kvothe, a young orphan who becomes a
+  legendarily talented musician and magician. The novel is known for its intricate
+  world-building, complex characters, and themes of power, love, and loss.
+  """
+}
+
+name_var = ""
+author = %{name: name_var}
+# author.name =  book.author
+name_var = book.author
+author_updated = author
+IO.inspect(name_var)
 ```
 
 We can only pattern match on the value in the map, not the key. Keys in maps must be **literals** such as atoms, strings, tuples, etc.
@@ -344,7 +365,8 @@ Bind `2` and `4` in the following map to variables `two` and `four`.
 Enter your solution below.
 
 ```elixir
-%{one: 1, two: 2, three: 3, four: 4}
+# %{ second: two, forth: four}=%{one: 1, two: 2, three: 3, four: 4}
+%{one: two, two: four} = %{one: 1, two: 2, three: 3, four: 4}
 ```
 
 ## Further Reading
