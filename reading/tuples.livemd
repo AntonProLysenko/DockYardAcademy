@@ -139,7 +139,6 @@ If we want to bind some of the variables in a tuple, and ignore others, we can u
 
 ```elixir
 {one, _two, three} = {1, 2, 3}
-_two
 ```
 
 You can pattern match with any kind of data. So long as the left side matches the right side. We'll cover pattern matching with other data structures in later reading material.
