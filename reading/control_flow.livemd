@@ -133,7 +133,13 @@ end
 Enter your solution below.
 
 ```elixir
+temperature = Enum.random(0..20)
 
+if temperature > 10 do
+  :hot
+else
+  :cold
+end
 ```
 
 ## Clear Control Flow
@@ -517,7 +523,14 @@ end
 </details>
 
 ```elixir
+grade = Enum.random(1..100)
 
+cond do
+  grade <= 54 -> "D"
+  grade >= 55 and grade <= 69 -> "C"
+  grade >= 70 and grade <= 84 -> "B"
+  grade >= 85 -> "A"
+end
 ```
 
 ## Unless
@@ -571,7 +584,13 @@ In the Elixir cell below
 * Create an `unless` statement. which returns `"awake"` unless `tired`.
 
 ```elixir
+state = [true, false]
 
+tired = Enum.at(state, Enum.random(0..1))
+
+unless tired do
+  "awake"
+end
 ```
 
 ## Commit Your Progress
