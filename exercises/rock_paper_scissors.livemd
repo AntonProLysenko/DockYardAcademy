@@ -66,7 +66,20 @@ Then, return the winning choice of either `:rock`, `:paper`, or `:scissors` that
 Enter your solution below.
 
 ```elixir
+player_choice = Enum.random([:rock, :paper, :scissors])
+computer_choice = Enum.random([:rock, :paper, :scissors])
 
+IO.inspect("Player: #{player_choice} Computer:#{computer_choice}")
+
+cond do
+  player_choice == computer_choice -> "Tie! play again"
+  player_choice == :rock and computer_choice == :scissors -> "You won!"
+  player_choice == :paper and computer_choice == :rock -> "You won!"
+  player_choice == :scissors and computer_choice == :paper -> "You won!"
+  computer_choice == :rock and player_choice == :scissors -> "Machine won!"
+  computer_choice == :paper and player_choice == :rock -> "Machine won!"
+  computer_choice == :scissors and player_choice == :paper -> "Machine won!"
+end
 ```
 
 ## Create Two Player Rock Paper Scissors
