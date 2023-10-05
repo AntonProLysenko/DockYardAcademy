@@ -113,6 +113,8 @@ defmodule MultiParamExample do
     IO.inspect(binding(), label: "Called with the following bindings")
   end
 end
+
+MultiParamExample.call("Hello", "Salute", "Hola")
 ```
 
 ### Your Turn
@@ -120,7 +122,7 @@ end
 Call the `MutliParamExample.call/3` function with different arguments.
 
 ```elixir
-
+MultiParamExample.call("Hello", "Salute", "Hola")
 ```
 
 ## Internal Module Functions
@@ -185,9 +187,13 @@ defmodule PrivateThoughts do
   defp think() do
     "I really want to say hi..."
   end
+
+  def thinking_out_loud do
+    think()
+  end
 end
 
-PrivateThoughts.think()
+PrivateThoughts.thinking_out_loud()
 ```
 
 We use private functions internally in the module, which means that public functions could expose their values.
@@ -219,12 +225,14 @@ defmodule HigherOrder do
 end
 
 defmodule Callback do
-  def callback_function do
-    "I was called!"
+  def callback_function(par) do
+    par <> " I was called!"
   end
 end
 
-HigherOrder.higher_order_function(&Callback.callback_function/0)
+HigherOrder.higher_order_function(&(Callback.callback_function("hi") / 1))
+# Callback.callback_function("Hi")
+# HigherOrder.higher_order_function(fn -> Callback.callback_function("HI") end)
 ```
 
 Notice we cannot simply pass `Callback.callback_function` as an argument.
@@ -318,7 +326,22 @@ end
 Enter your solution below.
 
 ```elixir
+defmodule Language.English do
+  def greeting do
+    "Hello!"
+  end
+end
 
+defmodule Language.Spanish do
+  def greeting do
+    "Hola"
+  end
+end
+
+IO.puts(
+  Language.English.greeting(),
+  Language.Spanish.greeting()
+)
 ```
 
 ### Nested Modules
@@ -466,18 +489,21 @@ Elixir allows us to define multiple functions with the same name but that expect
 defmodule MultipleFunctionClauses do
   def my_function do
     "arity is 0"
+    arity = 0
   end
 
   def my_function(_param1) do
     "arity is 1"
+    arity = 1
   end
 
   def my_function(_param1, _param2) do
     "arity is 2"
+    arity = 2
   end
 end
 
-MultipleFunctionClauses.my_function(1)
+MultipleFunctionClauses.my_function("Nihau", 45, 3)
 ```
 
 Each function clause has a different **arity**. We can treat each function with a different arity as a completely separate function. In Elixir, we ofen refer to functions by their name and arity.
@@ -516,7 +542,43 @@ end
 </details>
 
 ```elixir
+defmodule Math do
+  @moduledoc """
+  Math
+  calculates sum of all args
+  """
 
+  @doc """
+    calculates sum of if we have two args
+
+    ##Examples
+    iex> Math.add(1,2)
+    3
+    iex> Math.add(1,5)
+    6
+  """
+  def add(a, b) do
+    a + b
+  end
+
+  @doc """
+    calculates sum of if we have three args
+
+    ##Examples
+    iex> Math.add(1,2,3)
+    6
+    iex> Math.add(1,5,1)
+    7
+  """
+  def add(a, b, c) do
+    a + b + c
+  end
+end
+
+# 7
+Math.add(2, 5)
+# 6
+Math.add(1, 2, 3)
 ```
 
 ## Default Arguments
@@ -555,13 +617,13 @@ end
 ```
 
 ```elixir
-MutlipleDefaultArgs.all_defaults()
+MutlipleDefaultArgs.all_defaults("not default")
 ```
 
 We can even provide default arguments for only some parameters in the function.
 
 ```elixir
-MutlipleDefaultArgs.some_defaults("overridden argument")
+MutlipleDefaultArgs.some_defaults("overridden argument1", "arg2")
 ```
 
 This sometimes results in some confusion with the function's arity, and the number of arguments passed into the function. For example, the `MutlipleDefaultArgs.some_defaults/2` function above has an arity of `2`, despite only being called with one argument.
@@ -583,7 +645,13 @@ Greeting.hello("Andrew")
 ```
 
 ```elixir
+defmodule Greeting do
+  def hello(user \\ "User") do
+    "Hello " <> user <> "!"
+  end
+end
 
+Greeting.hello("Anton")
 ```
 
 ## Documentation
@@ -668,7 +736,7 @@ defmodule DoctestFailure do
     "expected return value"
   """
   def test do
-    "actual return value"
+    "expected return value"
   end
 end
 ```
@@ -696,25 +764,24 @@ If this is the case, you either have to fix your code, or remove/comment the cra
 Uncomment the following code and evaluate the cell to see an example. Re-comment your code to avoid crashing the livebook as you continue with the lesson.
 
 ```elixir
-# defmodule DoctestCrash Do
-# @moduledoc """
-# DoctestCrash
+defmodule DoctestCrash do
+  @moduledoc """
+  DoctestCrash
 
-# Explains Doctest Crashes With Examples
-# """
+  Explains Doctest Crashes With Examples
+  """
 
-# @doc """
-# Purposely Crashes Doctest Using Invalid Pattern Matching
+  @doc """
+  Purposely Crashes Doctest Using Invalid Pattern Matching
 
-# ## Examples
-
-# iex> {} = DoctestCrash.crash()
-# "2"
-# """
-# def crash do
-
-# end
-# end
+  ## Examples
+    iex>DoctestCrash.crash()
+    "2"
+  """
+  def crash do
+    "2"
+  end
+end
 ```
 
 ### Your Turn
