@@ -128,6 +128,25 @@ defmodule RockPaperScissorsLizardSpock do
       false
   """
   def beats?(guess1, guess2) do
+    IO.inspect("BEAT#{guess1} #{guess2}")
+
+    if guess1 == guess2 do
+      "Draw"
+    else
+      case {guess1, guess2} do
+        {:rock, :scissors} -> true
+        {:scissors, :paper} -> true
+        {:paper, :rock} -> true
+        {:rock, :lizard} -> true
+        {:lizard, :spock} -> true
+        {:spock, :scissors} -> true
+        {:scissors, :lizard} -> true
+        {:lizard, :paper} -> true
+        {:paper, :spock} -> true
+        {:spock, :rock} -> true
+        _ -> false
+      end
+    end
   end
 
   @doc """
@@ -138,8 +157,22 @@ defmodule RockPaperScissorsLizardSpock do
       iex> "Draw!" = RockPaperScissorsLizardSpock.play(:lizard, :lizard)
   """
   def play(player1, player2) do
+    result = beats?(player1, player2)
+    IO.inspect("Player1:#{player1} Player2: #{player2}")
+    IO.inspect(result)
+
+    cond do
+      result == "Draw" -> "Draw!"
+      result -> "Player 1 Wins!"
+      !result -> "Player 2 Wins!"
+    end
   end
 end
+
+variants = [:rock, :scissors, :paper, :lizard, :spock]
+
+RockPaperScissorsLizardSpock.play(Enum.random(variants), Enum.random(variants))
+# RockPaperScissorsLizardSpock.play(:lizard, :lizard)
 ```
 
 ## Commit Your Progress
