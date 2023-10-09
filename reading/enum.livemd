@@ -384,7 +384,7 @@ Enum.map(1..10, fn integer -> "#{integer}" end)
 Enter your solution below.
 
 ```elixir
-
+Enum.map([1, 2, 3, 4, 5, 6, 7, 8, 9], fn elem -> "#{elem}" end)
 ```
 
 ## Enum.reduce/2 And Enum.reduce/3
@@ -506,7 +506,13 @@ end)
 Enter your solution below.
 
 ```elixir
-
+Enum.reduce(1..10, 0, fn num, acc ->
+  if rem(num, 2) == 0 do
+    num + acc
+  else
+    acc
+  end
+end)
 ```
 
 ## Enum.filter
@@ -544,7 +550,8 @@ odd_numbers = Enum.filter(1..10, fn integer -> rem(integer, 2) != 0 end)
 Enter your solution below.
 
 ```elixir
-
+odd_numbers = Enum.filter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fn int -> rem(int, 2) != 0 end)
+even_numbers = Enum.filter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fn int -> rem(int, 2) == 0 end)
 ```
 
 ## Enum.all?/2
@@ -595,6 +602,7 @@ Use [Enum.all/2](https://hexdocs.pm/elixir/Enum.html#all/2) to determine if all 
 
 ```elixir
 colors = [:green, :green, :red]
+Enum.all?(colors, fn el -> el == :green end)
 ```
 
 ## Enum.any?/2
@@ -716,7 +724,7 @@ Enum.map(1..10, fn _ -> Enum.random(0..9) end)
 Enter your solution below.
 
 ```elixir
-
+Enum.random(0..9)
 ```
 
 ## Capture Operator And Module Functions
