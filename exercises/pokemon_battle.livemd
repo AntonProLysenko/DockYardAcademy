@@ -115,6 +115,47 @@ end
 </details>
 
 ```elixir
+defmodule Pokedon do
+  @moduledoc """
+  Pokemon
+
+  ## Examples
+      iex> attacker = %Pokemon{name: "Charmander", type: :fire, health: 20.0, attack: 5, speed: 20}
+      iex> defender = %Pokemon{name: "Bulbasaur", type: :grass, health: 20.0, attack: 5, speed: 20}
+      iex> Pokemon.attack(attacker, defender)
+      %Pokemon{name: "Bulbasaur", type: :grass, health: 10.0, attack: 5, speed: 20}
+  """
+  @enforce_keys [:name, :type, :health, :attack, :speed]
+  defstruct @enforce_keys ++ []
+
+  defp beats(attacker, defender) do
+    strong = {attacker, defender}
+
+    case strong do
+      {:fire, :grass} -> 2
+      {:grass, :watter} -> 2
+      {:watter, :fire} -> 2
+      _ -> 0.5
+    end
+  end
+
+  def attack(attacker, defender) do
+    multiplier = beats(attacker.type, defender.type)
+    # IO.puts("Defender: #{defender.name} \n Attaker: #{attacker.name} \n" )
+    Map.update(defender, :health, defender.health, fn health ->
+      health - attacker.attack * multiplier
+    end)
+  end
+end
+
+attacker = %Pokedon{name: "Charmander", type: :fire, health: 20.0, attack: 5, speed: 20}
+defender = %Pokedon{name: "Bulbasaur", type: :grass, health: 20.0, attack: 5, speed: 20}
+Pokemon.attack(attacker, defender)
+```
+
+Consider using the following Elixir cell to test your solution.
+
+```elixir
 defmodule Pokemon do
   @moduledoc """
   Pokemon
@@ -125,17 +166,28 @@ defmodule Pokemon do
       iex> Pokemon.attack(attacker, defender)
       %Pokemon{name: "Bulbasaur", type: :grass, health: 10.0, attack: 5, speed: 20}
   """
-  defstruct []
+  @enforce_keys [:name, :type, :health, :attack, :speed]
+  defstruct @enforce_keys ++ []
+
+  defp beats(attacker, defender) do
+    strong = {attacker, defender}
+
+    case strong do
+      {:fire, :grass} -> 2
+      {:grass, :watter} -> 2
+      {:watter, :fire} -> 2
+      _ -> 0.5
+    end
+  end
 
   def attack(attacker, defender) do
+    multiplier = beats(attacker.type, defender.type)
+    # IO.puts("Defender: #{defender.name} \n Attaker: #{attacker.name} \n" )
+    Map.update(defender, :health, defender.health, fn health ->
+      health - attacker.attack * multiplier
+    end)
   end
 end
-```
-
-Consider using the following Elixir cell to test your solution.
-
-```elixir
-
 ```
 
 ### Pokemon Instances
@@ -186,7 +238,44 @@ Pokemon.attack(charmander, bulbasaur)
 Enter your solution below.
 
 ```elixir
+defmodule Poke do
+  @moduledoc """
+  Pokemon
 
+  ## Examples
+      iex> attacker = %Pokemon{name: "Charmander", type: :fire, health: 20.0, attack: 5, speed: 20}
+      iex> defender = %Pokemon{name: "Bulbasaur", type: :grass, health: 20.0, attack: 5, speed: 20}
+      iex> Pokemon.attack(attacker, defender)
+      %Pokemon{name: "Bulbasaur", type: :grass, health: 10.0, attack: 5, speed: 20}
+  """
+  @enforce_keys [:name, :type, :health, :attack, :speed]
+  defstruct @enforce_keys ++ []
+
+  defp beats(attacker, defender) do
+    strong = {attacker, defender}
+
+    case strong do
+      {:fire, :grass} -> 2
+      {:grass, :watter} -> 2
+      {:watter, :fire} -> 2
+      _ -> 0.5
+    end
+  end
+
+  def attack(attacker, defender) do
+    multiplier = beats(attacker.type, defender.type)
+    # IO.puts("Defender: #{defender.name} \n Attaker: #{attacker.name} \n" )
+    Map.update(defender, :health, defender.health, fn health ->
+      health - attacker.attack * multiplier
+    end)
+  end
+end
+
+charmander = %Poke{name: "Charmander", type: :fire, health: 20, attack: 5, speed: 20}
+bulbasaur = %Poke{name: "Bulbasaur", type: :grass, health: 20, attack: 5, speed: 20}
+squirtle = %Poke{name: "Squirtle", type: :water, health: 20, attack: 5, speed: 20}
+
+Pockemon.attack(squirtle, bulbasaur)
 ```
 
 ## Commit Your Progress
