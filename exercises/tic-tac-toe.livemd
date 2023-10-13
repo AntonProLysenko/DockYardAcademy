@@ -145,11 +145,11 @@ defmodule TicTacToe do
   @doc """
   Read a coordinate on a board.
 
-  ## Examples
+  ## samples
 
-      We've used a board with letter symbols for sake of example.
+      We've used a board with letter symbols for sake of sample.
 
-      iex> board = [
+      is> board = [
       ...> ["A", "B", "C"],
       ...> ["D", "E", "F"],
       ...> ["G", "H", "I"]
@@ -162,7 +162,21 @@ defmodule TicTacToe do
       "A"
   """
   def at(board, coordinate) do
+    x = elem(coordinate, 0)
+
+    y =
+      cond do
+        elem(coordinate, 1) == 0 -> 2
+        elem(coordinate, 1) == 1 -> 1
+        elem(coordinate, 1) == 2 -> 0
+      end
+
+    Enum.at(Enum.at(board, y), x)
   end
+
+  # def read y(board,coordinate)do
+  # Enum.at(board,y)
+  # end
 
   @doc """
   Fill in a coordinate on a board with the provided symbol and return a new updated board.
@@ -170,7 +184,7 @@ defmodule TicTacToe do
   ## Examples
 
       iex> board = [
-      ...> [nil, nil, nil], 
+      ...> [_, nil, nil], 
       ...> [nil, nil, nil],
       ...> [nil, nil, nil]
       ...> ]
@@ -180,6 +194,75 @@ defmodule TicTacToe do
       [[nil, nil, nil], [nil, "O", nil], [nil, nil, nil]]
   """
   def fill(board, coordinate, symbol) do
+    # found_symbol = at(board, coordinate)
+    y =
+      cond do
+        elem(coordinate, 1) == 0 -> 2
+        elem(coordinate, 1) == 1 -> 1
+        elem(coordinate, 1) == 2 -> 0
+      end
+
+    x = elem(coordinate, 0)
+
+    changed_row = List.update_at(Enum.at(board, y), x, &(&1 = symbol))
+    List.update_at(board, y, &(&1 = changed_row))
+  end
+
+  @doc """
+  Determine if a player has won the game.
+
+  ## Examples
+
+    Row Wins:
+
+    iex> TicTacToe.winner([["X", "X", "X"], [nil, nil, nil], [nil, nil, nil]])
+    "X"
+    iex> TicTacToe.winner([[nil, nil, nil], ["X", "X", "X"], [nil, nil, nil]])
+    "X"
+    iex> TicTacToe.winner([[nil, nil, nil], [nil, nil, nil], ["X", "X", "X"]])
+    "X"
+
+    Column Wins:
+
+    iex> TicTacToe.winner([["X", nil, nil], ["X", nil, nil], ["X", nil, nil]])
+    "X"
+    iex> TicTacToe.winner([[nil, "X", nil], [nil, "X", nil], [nil, "X", nil]])
+    "X"
+    iex> TicTacToe.winner([[nil, nil, "X"], [nil, nil, "X"], [nil, nil, "X"]])
+    "X"
+
+    Diagonal Wins
+
+    iex> TicTacToe.winner([["X", nil, nil], [nil, "X", nil], [nil, nil, "X"]])
+    "X"
+    iex> TicTacToe.winner([[nil, nil, "X"], [nil, "X", nil], ["X", nil, nil]])
+    "X"
+
+    No Winner
+
+    iex> TicTacToe.winner([[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]])
+    nil
+    iex> TicTacToe.winner([[nil, "X", nil], [nil, "X", nil], [nil, nil, nil]])
+    nil
+
+  """
+  def winner(board) do
+    cond do
+      winner?(board, "X") -> "X won"
+      winner?(board, "O") -> "O won"
+      true -> "Tie"
+    end
+
+    def winner?(board, s) do
+      match?([[s, s, s], [_, _, _], [_, _, _]], board) or
+        match?([[_, _, _], [s, s, s], [_, _, _]], board) or
+        match?([[_, _, _], [_, _, _], [s, s, s]], board) or
+        match?([[s, _, _], [s, _, _], [s, _, _]], board) or
+        match?([[_, s, _], [_, s, _], [_, s, _]], board) or
+        match?([[_, _, s], [_, _, s], [_, _, s]], board) or
+        match?([[s, _, _], [_, s, _], [_, _, s]], board) or
+        match?([[_, _, s], [_, s, _], [s, _, _]], board)
+    end
   end
 end
 ```
