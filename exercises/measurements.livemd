@@ -82,6 +82,11 @@ defmodule Measurements do
     [10, -10, 30]
   """
   def increments(measurements) do
+    measurements
+    |> Enum.chunk_every(2, 1, :discard)
+    |> Enum.map(fn el -> Enum.at(el, 1) - Enum.at(el, 0) end)
+
+    #  Enum.map(Enum.chunk_every(measurements,2, 1, :discard), fn el -> Enum.at(el,1) - Enum.at(el,0) end)
   end
 
   @doc """
@@ -100,6 +105,8 @@ defmodule Measurements do
     1
   """
   def increased(measurements) do
+    filtered = Enum.filter(increments(measurements), fn el -> el > 0 end)
+    length(filtered)
   end
 
   @doc """
@@ -115,9 +122,7 @@ defmodule Measurements do
     40
   """
   def increased_by(measurements) do
-    Enum.map(measurements, fn el ->
-      diff = 0
-    end)
+    Enum.reduce(measurements, 0, fn el, acc -> el - acc end)
   end
 
   @doc """
