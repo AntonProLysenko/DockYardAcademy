@@ -125,12 +125,29 @@ end
 
 ```elixir
 defmodule Products do
+  @device ["computer", "phone", "tablet"]
   def all_items do
+    for product <- @device, price <- 1..100 do
+      %{name: product, price: price}
+    end
   end
 
   def search(items, filters) do
+    type_filtered =
+      if filters[:name] do
+        Enum.filter(items, fn item -> item.name == filters[:name] end)
+      else
+        items
+      end
+
+    for device <- type_filtered, price <- filters[:min]..filters[:max], device.price == price do
+      device
+    end
   end
 end
+
+all_items = Products.all_items()
+Products.search(all_items, min: 10, max: 10)
 ```
 
 ## Commit Your Progress
