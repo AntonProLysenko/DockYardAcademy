@@ -115,6 +115,9 @@ defmodule Measurements do
     40
   """
   def increased_by(measurements) do
+    Enum.map(measurements, fn el ->
+      diff = 0
+    end)
   end
 
   @doc """
@@ -130,6 +133,7 @@ defmodule Measurements do
     6.0
   """
   def average(measurements) do
+    Enum.sum(measurements) / Enum.count(measurements)
   end
 end
 ```
