@@ -251,8 +251,8 @@ Regex.replace(~r/Peter Parker/, "Peter Parker is spiderman", "--secret--")
 to replace it.
 
 ```elixir
-Regex.replace(~r/\d/, "12345", fn each ->
-  "#{each = "X"}"
+Regex.replace(~r/\d/, "12345", fn _each ->
+  "X"
 end)
 ```
 
@@ -361,8 +361,8 @@ end)
 </details>
 
 ```elixir
-Regex.replace(~r/\d{3}(-\d{3}-\d{4})/, "999-999-9999", fn _full_match, section ->
-  "999" <> Regex.replace(~r/\d/, section, fn num -> "#{num = "X"}" end)
+Regex.replace(~r/\d{3}(-\d{3}-\d{4})/, "999-999-9999", fn _all, captured ->
+  "999" <> Regex.replace(~r/\d/, captured, "X")
 end)
 ```
 
@@ -465,8 +465,8 @@ end)
 </details>
 
 ```elixir
-Regex.replace(~r/\#(\d{3})(\d{3})(\d{4})/, "#9999999999", fn _match, area, section1, section2 ->
-  area <> "-" <> section1 <> "-" <> section2
+Regex.replace(~r/\#(\d{3})(\d{3})(\d{4})/, "#9999999999", fn _all, area, num1, num2 ->
+  "#{area}-#{num1}-#{num2}"
 end)
 ```
 
