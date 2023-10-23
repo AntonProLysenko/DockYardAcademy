@@ -278,7 +278,7 @@ In your `hello_world` application, create a new module, `HelloWorld.Name` in a `
 ```elixir
 defmodule HelloWorld.Name do
   def random do
-    Enum.random(["Peter", "Bruce", "Tony"])
+    Enum.random(["Peter", "Bruce", "Anton"])
   end
 end
 ```
