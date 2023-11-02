@@ -72,6 +72,14 @@ defmodule Replace do
   [1, 2, 3, 4, "5"]
   """
   def nils(list1, list2) do
+    Enum.with_index(list1)
+    |> Enum.map(fn {el, idx} ->
+      if el == nil do
+        Enum.at(list2, idx)
+      else
+        el
+      end
+    end)
   end
 end
 ```
