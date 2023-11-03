@@ -57,6 +57,10 @@ defmodule IntegerGuardExample do
   def double(int) when is_integer(int) do
     int * 2
   end
+
+  def double(int) when is_float(int) do
+    int * 3
+  end
 end
 
 IntegerGuardExample.double(2)
@@ -245,9 +249,12 @@ end
 
 ```elixir
 defmodule Say do
-  def hello(name) do
+  def hello(name) when is_binary(name) do
+    "Hello #{name}!"
   end
 end
+
+Say.hello("Stephen")
 ```
 
 ### Your Turn
@@ -289,9 +296,15 @@ Enter your solution below.
 
 ```elixir
 defmodule Percent do
-  def display(percent) do
+  def display(percent) when percent <= 100 and percent > 0 do
+    "#{percent}%"
   end
 end
+
+Percent.display(0.1)
+Percent.display(100)
+Percent.display(0)
+Percent.display(101)
 ```
 
 ## Further Reading
