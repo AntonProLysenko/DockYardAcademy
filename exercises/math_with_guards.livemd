@@ -120,11 +120,34 @@ defmodule Math do
   ** (FunctionClauseError) no function clause matching in Math.add/2
   """
 
-  def add(value1, value2) do
+  def add(value1, value2) when is_number(value1) and is_number(value1) do
+    value1 + value2
   end
 
-  def subtract(value1, value2) do
+  def add(value1, value2) when is_binary(value1) and is_binary(value1) do
+    value1 <> value2
   end
+
+  def add(value1, value2) when is_list(value1) and is_list(value1) do
+    value1 ++ value2
+  end
+
+  def subtract(value1, value2) when is_number(value1) and is_number(value1) do
+    value1 - value2
+  end
+
+  def subtract(value1, value2) when is_list(value1) and is_list(value1) do
+    value1 -- value2
+  end
+
+  def subtract(value1, value2) when is_binary(value1) and is_binary(value1) do
+    (String.split(value1, "") -- String.split(value2, ""))
+    |> List.to_string()
+  end
+
+  # def add(value1, value2) do
+  #   IO.puts("bad argument in arithmetic expression")
+  # end
 end
 ```
 
