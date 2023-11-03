@@ -79,6 +79,10 @@ student = %{name: "Einar", is_admin: true}
 with %{name: name, is_admin: true} <- student do
   IO.puts("admin #{name} is authorized.")
 end
+
+# if student.is_admin do
+#   IO.puts("admin #{student.name} is authorized.")
+# end
 ```
 
 ### Your Turn
@@ -88,7 +92,7 @@ end
 Change the value of `user` below to hit every case in the `else` clause (one at a time.)
 
 ```elixir
-user = %{name: "Jon", is_admin: false}
+user = %{name: "Jason", is_admin: true}
 
 with %{name: name, is_admin: true} <- user do
   IO.puts("admin #{name} is authorized.")
@@ -119,7 +123,7 @@ However, we want you to be aware of this pattern so that you are familiar with i
 Change `value` to trigger every else clause.
 
 ```elixir
-value = "exampleqweqwqwer"
+value = "asdf"
 
 with {:not_binary, true} <- {:not_binary, is_binary(value)},
      {:too_long, true} <- {:too_long, String.length(value) <= 10},
