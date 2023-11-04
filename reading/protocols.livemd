@@ -205,7 +205,11 @@ end
 </details>
 
 ```elixir
-
+defimpl Adder, for: List do
+  def add(list1, list2) do
+    list1 ++ list2
+  end
+end
 ```
 
 ## Protocols With Structs
@@ -257,9 +261,13 @@ Sound.say(%Cat{mood: :angry})
 
 ```elixir
 defmodule Dog do
-  defstruct []
+  defstruct [:mood]
 end
 ```
+
+
+
+<!-- livebook:{"break_markdown":true} -->
 
 Define a `Sound` implementation for the `Dog` struct above.
 When `Sound.say/1` is called with a `Dog` struct it should return `"Woof!"`
@@ -285,7 +293,16 @@ end
 </details>
 
 ```elixir
+defimpl Sound, for: Dog do
+  def say(dog) do
+    case dog.mood do
+      :happy -> "Wuff"
+      :angry -> "Woof"
+    end
+  end
+end
 
+Sound.say(%Dog{mood: :happy})
 ```
 
 For more information, there is a talk by Kevin Rockwood.
