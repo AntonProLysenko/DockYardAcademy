@@ -157,7 +157,8 @@ DO NOT DELETE IMPORTANT FILES ON YOUR SYSTEM WHEN USING THE FILE MODULE
 </div>
 
 ```elixir
-
+File.cd("Desktop")
+File.mkdir!("Katya Elixir")
 ```
 
 ## Path Module Functions

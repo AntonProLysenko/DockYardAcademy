@@ -3,10 +3,11 @@
 ```elixir
 Mix.install([
   {:jason, "~> 1.4"},
-  {:kino, "~> 0.9", override: true},
+  {:kino, "~> 0.11.1", override: true},
   {:youtube, github: "brooklinjazz/youtube"},
   {:hidden_cell, github: "brooklinjazz/hidden_cell"},
-  {:benchee, "~> 1.1"}
+  {:benchee, "~> 1.1"},
+  {:kino_explorer, "~> 0.1.4"}
 ])
 ```
 
@@ -54,7 +55,11 @@ memory during execution.
 
 Each [Enum](https://hexdocs.pm/elixir/Enum.html) function stores a copy of the the enumerable it creates and executes sequentially as seen in this diagram.
 
-<!-- livebook:{"attrs":{"source":"box = fn value, color ->\n  \"<div style='height: 3rem; width: 3rem; background-color: #{color}; display: flex; color: white; justify-content: center; align-items: center;'>#{value}</div>\"\nend\n\nget_color = fn in_memory ->\n  if in_memory, do: \"green\", else: \"lightgray\"\nend\n\nKino.animate(1000, 1, fn _, row ->\n  md =\n    Kino.Markdown.new(\"\"\"\n    <div style=\"display: grid; grid-template-columns: max-content repeat(10, 3rem);gap: 1rem;\">\n      <p>1..10:</p>#{Enum.map(1..10, fn index -> box.(index, get_color.(row >= 0)) end)}\n      <p>Enum.map</p>#{Enum.map(1..10, fn index -> box.(index * 2, get_color.(row >= 1)) end)}\n      <p>Enum.filter</p>#{Enum.map(1..10, fn index -> box.(index * 2, get_color.(index <= 5 and row >= 2)) end)}\n      <p>Enum.take</p>#{Enum.map(1..10, fn index -> box.(index * 2, get_color.(index <= 4 and row >= 3)) end)}\n    </div>\n\n    \"\"\")\n\n  {:cont, md, rem(row + 1, 4)}\nend)","title":"Enum Memory Usage"},"chunks":null,"kind":"Elixir.HiddenCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"assign_to":null,"collect":true,"data_frame":null,"data_frame_alias":"Elixir.Explorer.DataFrame","is_data_frame":null,"missing_require":"Elixir.Explorer.DataFrame","operations":[{"active":true,"column":null,"datalist":[],"filter":null,"operation_type":"filters","type":"string","value":null}]},"chunks":null,"kind":"Elixir.KinoExplorer.DataTransformCell","livebook_object":"smart_cell"} -->
+
+```elixir
+
+```
 
 ```elixir
 box = fn value, color ->
@@ -86,8 +91,6 @@ While the operation above is a bit contrived for the sake of simplifying the exa
 It's a waste of resources to execute every operation on every element. It would be far more performant if we could instead build up a series of functions and run them one by one only when needed.
 
 By using Streams and Lazy evaluation, we can massively improve memory usage as seen in the animation below.
-
-<!-- livebook:{"attrs":{"source":"box = fn value, color ->\n  \"<div style='height: 3rem; width: 3rem; background-color: #{color}; display: flex; color: white; justify-content: center; align-items: center;'>#{value}</div>\"\nend\n\nget_color = fn in_memory ->\n  if in_memory, do: \"green\", else: \"lightgray\"\nend\n\nKino.animate(500, {1, 1}, fn _, {column, row} = position ->\n  md =\n    Kino.Markdown.new(\"\"\"\n    <div style=\"display: grid; grid-template-columns: max-content repeat(10, 3rem);gap: 1rem;\">\n      <p>In Memory:</p>#{Enum.map(1..10, fn index -> box.(index, get_color.(row == 1 and column == index)) end)}\n      <p>In Memory:</p>#{Enum.map(1..10, fn index -> box.(index * 2, get_color.(row == 2 and column == index)) end)}\n      <p>In Memory:</p>#{Enum.map(1..10, fn index -> box.(index * 2, get_color.(row == 3 and column == index)) end)}\n      <p>In Memory:</p>#{Enum.map(1..10, fn index -> box.(index * 2, get_color.(column > index || (row == 4 and column == index))) end)}\n    </div>\n    \"\"\")\n\n  next_position =\n    case position do\n      {4, 4} -> {1, 1}\n      {column, 4} -> {column + 1, 1}\n      {column, row} -> {column, row + 1}\n    end\n\n  {:cont, md, next_position}\nend)","title":"Stream Memory Usage"},"chunks":null,"kind":"Elixir.HiddenCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 box = fn value, color ->
@@ -230,7 +233,16 @@ In the Elixir cell below, try refactoring this code using the [Stream](https://h
 ```
 
 ```elixir
+1..100
+|> Stream.map(fn each -> div(each, 2) end)
+|> Stream.map(fn each -> each * 3 end)
+|> Stream.filter(fn each -> rem(each, 2) === 0 end)
+|> Enum.to_list()
 
+# 1..100
+# |> Enum.map(fn each -> div(each, 2) end)
+# |> Enum.map(fn each -> each * 3 end)
+# |> Enum.filter(fn each -> rem(each, 2) === 0 end)
 ```
 
 ## Stream Gotchas
@@ -491,7 +503,10 @@ end)
 </details>
 
 ```elixir
-
+Stream.unfold(1, fn acc ->
+  {acc ** 3, acc + 1}
+end)
+|> Enum.take(20)
 ```
 
 ## Commit Your Progress

@@ -265,10 +265,6 @@ defmodule Dog do
 end
 ```
 
-
-
-<!-- livebook:{"break_markdown":true} -->
-
 Define a `Sound` implementation for the `Dog` struct above.
 When `Sound.say/1` is called with a `Dog` struct it should return `"Woof!"`
 
