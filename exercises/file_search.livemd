@@ -94,6 +94,7 @@ defmodule FileSearch do
   ["file1.txt", "file2.txt", "file3.txt", "file4.txt"]
   """
   def all(folder) do
+    File.ls()
   end
 
   @doc """
@@ -124,8 +125,11 @@ defmodule FileSearch do
   }
   """
   def by_extension(folder) do
+    IO.inspect(folder, label: "by_ext")
   end
 end
+
+FileSearch.all()
 ```
 
 ### Configure Project As A Script
