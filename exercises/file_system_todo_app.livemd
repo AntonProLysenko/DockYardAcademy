@@ -67,6 +67,7 @@ Implement the `TodoList` module as documented. You may choose any file for your 
 
 ```elixir
 defmodule TodoList do
+  @saved "todo_list"
   @moduledoc """
   Documentation for `TodoList`
   """
@@ -79,6 +80,10 @@ defmodule TodoList do
       []
   """
   def list do
+    case elem(File.read(@saved), 0) do
+      :ok -> elem(File.read(@saved), 1)
+      _ -> []
+    end
   end
 
   @doc """
@@ -91,7 +96,20 @@ defmodule TodoList do
       TodoList.list()
       ["task 2", "task 1"]
   """
+
   def add(item) do
+    IO.inspect(:erlang.binary_to_term(list()), label: "before")
+
+    list =
+      case item in :erlang.binary_to_term(list()) do
+        false -> [item | :erlang.binary_to_term(list())]
+        true -> :erlang.binary_to_term(list())
+      end
+
+    # IO.inspect(list, label: "before")
+    File.write(@saved, :erlang.term_to_binary(list))
+    # {:ok, list} = File.read(@saved)
+    # :erlang.binary_to_term(list)
   end
 
   @doc """
@@ -104,9 +122,18 @@ defmodule TodoList do
       TodoList.list()
       ["task 2", "task 1"]
   """
+
   def complete(item) do
+    list = :erlang.binary_to_term(list())
+    list = list -- [item]
+    File.write(@saved, :erlang.term_to_binary(list))
   end
 end
+
+TodoList.add("task 1")
+TodoList.add("task 2")
+TodoList.add("finish homework")
+TodoList.complete("finish homework")
 ```
 
 ## Commit Your Progress
