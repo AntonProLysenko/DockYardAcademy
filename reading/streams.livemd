@@ -502,6 +502,10 @@ end)
 
 </details>
 
+<!-- livebook:{"break_markdown":true} -->
+
+
+
 ```elixir
 Stream.unfold(1, fn acc ->
   {acc ** 3, acc + 1}
