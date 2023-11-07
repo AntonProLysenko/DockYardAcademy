@@ -186,11 +186,11 @@ Use [Process.spawn/2](https://hexdocs.pm/elixir/Process.html#spawn/2) and [Proce
 Once finished, switch the exit reason to `:kill` to demonstrate that the process is unlinked, because it does not crash the calling process.
 
 ```elixir
-Process.spawn(fn -> IO.puts("I started") end, [:monitor])
-Process.sleep(5000)
-Process.spawn(fn -> IO.puts("I Finished") end, [:monitor])
-Process.exit(self(), :normal)
-Process.exit(self(), :kill)
+# Process.spawn(fn -> IO.puts("I started") end, [:monitor])
+# Process.sleep(5000)
+# Process.spawn(fn -> IO.puts("I Finished") end, [:monitor])
+# Process.exit(self(), :normal)
+# Process.exit(self(), :kill)
 ```
 
 Use [Kernel.spawn_link/1](https://hexdocs.pm/elixir/Kernel.html#spawn_link/1) and [Process.sleep/1](https://hexdocs.pm/elixir/Process.html#sleep/1) to spawn a linked process that sleeps for five seconds. Use [Process.exit/2](https://hexdocs.pm/elixir/Process.html#exit/2) with the `:normal` exit reason to kill the spawned process.
@@ -198,7 +198,12 @@ Use [Kernel.spawn_link/1](https://hexdocs.pm/elixir/Kernel.html#spawn_link/1) an
 Notice that the Livebook does not crash. Switch the exit reason to `:kill` and notice that the Livebook does crash. Comment out your solution to avoid crashing Livebook.
 
 ```elixir
+Process.sleep(2000)
+child = spawn_link(fn -> send(self(), :msg) end)
 
+receive do
+  :msg -> IO.puts("OoP")
+end
 ```
 
 ## Commit Your Progress
