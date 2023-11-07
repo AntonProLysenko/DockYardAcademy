@@ -307,7 +307,7 @@ stream = File.stream!("stream.txt") |> IO.inspect(label: "Stream")
 Enum.to_list(stream) |> IO.inspect(label: "Lines")
 
 # Cleaning Up File
-File.rm("stream.txt")
+# File.rm("stream.txt")
 ```
 
 ### IO And The File System
