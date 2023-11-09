@@ -139,6 +139,14 @@ defmodule CounterServer do
     {:noreply, state + 1}
   end
 
+  def handle_cast(:decrement, state) do
+    {:noreply, state - 1}
+  end
+
+  def handle_cast({:decrement, amount}, state) do
+    {:noreply, state - amount}
+  end
+
   @impl true
   def handle_call(:get_count, _from, state) do
     # `response` bound for sake of clarity.
@@ -153,6 +161,10 @@ Using the GenServer above, here's an example of sending an asynchronous message 
 ```elixir
 {:ok, pid} = GenServer.start_link(CounterServer, [])
 GenServer.cast(pid, :increment)
+GenServer.call(pid, :get_count)
+GenServer.cast(pid, {:decrement, 10})
+GenServer.call(pid, :get_count)
+GenServer.cast(pid, :decrement)
 GenServer.call(pid, :get_count)
 ```
 
@@ -388,7 +400,7 @@ defmodule SendingSelfExample do
   end
 
   def handle_cast(:talking_to_myself, state) do
-    Process.sleep(1000)
+    # Process.sleep(1000)
     IO.puts("Talking to myself")
     GenServer.cast(self(), :talking_to_myself)
     {:noreply, state}
