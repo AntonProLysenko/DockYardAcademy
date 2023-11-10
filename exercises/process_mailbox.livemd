@@ -138,7 +138,22 @@ defmodule Mailbox do
       ...> end
       "Hello!"
   """
+
   def loop(state \\ []) do
+    receive do
+      {:send, msg} ->
+        loop([msg | state])
+
+      {:read, sender} ->
+        if length(state) > 0 do
+          # IO.puts(Enum.at(state,0))
+          send(sender, Enum.at(state, 0))
+          loop(List.delete(state, Enum.at(state, 0)))
+        else
+          send(sender, :empty)
+          loop(state)
+        end
+    end
   end
 end
 ```

@@ -114,8 +114,8 @@ send(proc, {:message, "value"})
 Use [Process.spawn/2](https://hexdocs.pm/elixir/Process.html#spawn/2) to spawn a process that raises an error. Notice it does not crash the Livebook, because it is an **unlinked** process.
 
 ```elixir
-spawn(fn -> raise "Snap!" end)
-IO.puts("Error rised !")
+# spawn(fn -> raise "Snap!" end)
+# IO.puts("Error rised !")
 ```
 
 Use [Process.spawn/3](https://hexdocs.pm/elixir/Process.html#spawn/3) and [Process.sleep/1](https://hexdocs.pm/elixir/Process.html#sleep/1) to spawn a process which raises an error after one second. Use [Process.link/1](https://hexdocs.pm/elixir/Process.html#link/1) to link the process.
@@ -133,7 +133,7 @@ Livebook should crash. Comment out your solution so that you can move on.
 Use [Process.spawn/2](https://hexdocs.pm/elixir/Process.html#spawn/2) and [Process.sleep/1](https://hexdocs.pm/elixir/Process.html#sleep/1) to spawn a process that sleeps for five seconds. Use [Process.alive?/1](https://hexdocs.pm/elixir/Process.html#alive?/1) and [Process.sleep/1](https://hexdocs.pm/elixir/Process.html#sleep/1) to check if the process is alive after two seconds. [Process.alive?/1](https://hexdocs.pm/elixir/Process.html#alive?/1) should return `true`.
 
 ```elixir
-Process.sleep(2000)
+Process.sleep(5000)
 
 pid = spawn(fn -> IO.puts("Hello") end)
 # Process.sleep(1)
