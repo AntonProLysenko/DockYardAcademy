@@ -102,26 +102,36 @@ defmodule ScoreTracker do
 
   # Client API
 
-  def start_link(_opts) do
+  def start_link(opts) do
+    GenServer.start_link(__MODULE__, opts)
   end
 
-  def score(score_tracker_pid, amount) do
+  def add_points(score_tracker_pid, amount) do
+    GenServer.cast(score_tracker_pid, {:add_points, amount})
   end
 
   def current_score(score_tracker_pid) do
+    GenServer.call(score_tracker_pid, :current_score)
   end
 
   # Server API
 
-  def init(_init_arg) do
+  def init(_init_arg \\ 0) do
+    {:ok, 0}
   end
 
   def handle_cast({:add_points, amount}, state) do
+    {:noreply, state + amount}
   end
 
   def handle_call(:current_score, _from, state) do
+    {:reply, state, state}
   end
 end
+
+{:ok, pid} = ScoreTracker.start_link([])
+ScoreTracker.add_points(pid, 10)
+ScoreTracker.current_score(pid)
 ```
 
 ## Bonus: Multiplayer Score Tracker
@@ -218,17 +228,49 @@ defmodule MultiplayerScoreTracker do
   use GenServer
 
   def start_link(_opts) do
+    GenServer.start_link(__MODULE__, %{})
   end
 
+  # Handle an asynchronous {:add_points, player_name, amount} message to increment the score state.
   def add_points(multiplayer_score_tracker_pid, player_name, amount) do
+    GenServer.cast(multiplayer_score_tracker_pid, {:add_points, player_name, amount})
   end
 
   def all_scores(multiplayer_score_tracker_pid) do
+    GenServer.call(multiplayer_score_tracker_pid, :get)
   end
 
   def current_score(multiplayer_score_tracker_pid, player_name) do
+    GenServer.call(multiplayer_score_tracker_pid, {:get, player_name})
+  end
+
+  @impl true
+  def init(_init_state) do
+    {:ok, %{}}
+  end
+
+  @impl true
+  def handle_cast({:add_points, player_name, amount}, state) do
+    # IO.puts(state)
+    {:noreply, Map.update(state, player_name, amount, fn val -> val + amount end)}
+  end
+
+  @impl true
+  def handle_call({:get, player_name}, _from, state) do
+    score = Map.get(state, player_name)
+    {:reply, score, score}
+  end
+
+  @impl true
+  def handle_call(:get, _from, state) do
+    {:reply, state, state}
   end
 end
+
+{:ok, pid} = MultiplayerScoreTracker.start_link([])
+MultiplayerScoreTracker.add_points(pid, :player1, 10)
+MultiplayerScoreTracker.add_points(pid, :player1, 20)
+MultiplayerScoreTracker.add_points(pid, :player2, 20)
 ```
 
 ## Commit Your Progress
