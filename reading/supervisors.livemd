@@ -449,13 +449,13 @@ Start **four** `Bomb` processes under a supervisor with different bomb times. Tr
 
 ```elixir
 bombs = [
-  %{id: :bomb1, start: {Bomb, :stare_link, [[name: "Bimba 1", bomb_time: 2000]]}},
-  %{id: :bomb2, start: {Bomb, :stare_link, [[name: "Bimba 2", bomb_time: 3000]]}},
-  %{id: :bomb3, start: {Bomb, :stare_link, [[name: "Bimba 3", bomb_time: 2500]]}},
-  %{id: :bomb4, start: {Bomb, :stare_link, [[name: "Bimba 4", bomb_time: 1500]]}}
+  %{id: :bomb1, start: {Bomb, :start_link, [[name: "Bimba 1", bomb_time: 2000]]}},
+  %{id: :bomb2, start: {Bomb, :start_link, [[name: "Bimba 2", bomb_time: 3000]]}},
+  %{id: :bomb3, start: {Bomb, :start_link, [[name: "Bimba 3", bomb_time: 2500]]}},
+  %{id: :bomb4, start: {Bomb, :start_link, [[name: "Bimba 4", bomb_time: 1500]]}}
 ]
 
-{:ok, super_pid} = Supervisor.start_link(bombs, Strategy: :rest_for_one, Max_restarts: 5)
+{:ok, super_pid} = Supervisor.start_link(bombs, strategy: :rest_for_one, max_restarts: 3)
 ```
 
 ## Syntax Sugar
