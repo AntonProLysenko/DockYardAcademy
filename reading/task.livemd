@@ -183,7 +183,16 @@ execution and parallel execution.
 You may consider using [Process.sleep/1](https://hexdocs.pm/elixir/Process.html#sleep/1) to simulate an expensive computation.
 
 ```elixir
+light_comput = Task.async(fn -> IO.puts("Light Computation started later") end)
 
+heavy_comput =
+  Task.async(fn ->
+    Process.sleep(2000)
+    IO.puts("Heavy Computation Started earlier")
+  end)
+
+Task.await(heavy_comput)
+Task.await(light_comput)
 ```
 
 ## Awaiting Many Tasks
@@ -194,7 +203,7 @@ When working with many parallel tasks, we can use enumeration to spawn many task
 tasks =
   Enum.map(1..5, fn each ->
     Task.async(fn ->
-      Process.sleep(1000)
+      Process.sleep(2000)
       each * 2
     end)
   end)
@@ -211,8 +220,10 @@ Alternatively, you can use the convenient `Taskl.await_many/1` function instead.
 ```elixir
 tasks =
   Enum.map(1..5, fn each ->
+    Process.sleep(4000)
+    IO.puts("Waited 4 sec")
+
     Task.async(fn ->
-      Process.sleep(1000)
       each * 2
     end)
   end)
@@ -254,7 +265,13 @@ In the Elixir cell below, spawn a task which takes one second to complete.
 `await/2` the task and alter the timeout value to be one second. Awaiting the task should crash.
 
 ```elixir
+one_sec =
+  Task.async(fn ->
+    Process.sleep(1000)
+    IO.puts("Waited one sec")
+  end)
 
+Task.await(one_sec, 1000)
 ```
 
 ## Further Reading
