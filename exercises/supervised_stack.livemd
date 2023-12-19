@@ -44,8 +44,20 @@ Here's an example Stack GenServer you can use.
 defmodule Stack do
   use GenServer
 
-  def start_link(opts) do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(opts \\ []) do
+    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
+  end
+
+  def push(pid, elem) do
+    GenServer.call(pid, {:push, elem})
+  end
+
+  def pop(pid) do
+    GenServer.call(pid, :pop)
+  end
+
+  def check(pid) do
+    GenServer.call(pid, :read)
   end
 
   @impl true
@@ -64,7 +76,26 @@ defmodule Stack do
     new_state = [element | state]
     {:reply, new_state, new_state}
   end
+
+  @impl true
+  def handle_call(:read, _from, state) do
+    {:reply, state, state}
+  end
 end
+
+{:ok, pid} = GenServer.start_link(Stack, [])
+
+children = [
+  {Stack, []}
+]
+
+{:ok, supervisor_pid} = Supervisor.start_link(children, strategy: :one_for_one)
+
+Stack.check(pid)
+Stack.push(pid, 2)
+Stack.pop(pid)
+Stack.check(pid)
+Stack.pop(pid)
 ```
 
 We're able to push and pop elements off of the stack. However, there's a bug. If we try to `pop/1` an item off of an empty stack, the process
@@ -73,8 +104,14 @@ will crash due to a function clause error because the `handle_call/2` function e
 Uncomment the following code to watch the `Stack` crash.
 
 ```elixir
-# {:ok, pid} = GenServer.start_link(Stack, [])
-# GenServer.call(stack_pid, :pop)
+children = [
+  {Stack, []}
+]
+
+{:ok, supervisor_pid} = Supervisor.start_link(children, strategy: :one_for_one)
+
+{:ok, pid} = GenServer.start_link(Stack, [])
+# GenServer.call(pid, :pop)
 ```
 
 Normally, we could handle this by using control flow. For example, we could make another `handle_call/3` function clause for when the stack is empty.
