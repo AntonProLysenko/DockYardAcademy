@@ -169,7 +169,7 @@ Now when we kill a [Task](https://hexdocs.pm/elixir/Task.html) started with the 
   Task.Supervisor.start_child(
     MyTaskSupervisor,
     fn ->
-      Process.sleep(60000)
+      Process.sleep(1000)
     end,
     restart: :transient
   )
