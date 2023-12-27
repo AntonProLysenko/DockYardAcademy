@@ -3,7 +3,7 @@
 ```elixir
 Mix.install([
   {:jason, "~> 1.4"},
-  {:kino, "~> 0.9", override: true},
+  # {:kino, "~> 0.11", override: true},
   {:youtube, github: "brooklinjazz/youtube"},
   {:hidden_cell, github: "brooklinjazz/hidden_cell"},
   {:finch, "~> 0.16.0"}
@@ -316,7 +316,7 @@ APIs commonly return a JSON response. For example, here we make a request to a J
 
 ```elixir
 response =
-  Finch.build(:get, "https://v2.jokeapi.dev/joke/Any?safe-mode&format=json")
+  Finch.build(:get, "https://v2.jokeapi.dev/joke/Any?format=json")
   |> Finch.request!(MyApp.Finch)
 ```
 
@@ -472,7 +472,22 @@ IO.puts(message)
 </details>
 
 ```elixir
+url = "https://api.openai.com/v1/chat/completions"
+method = :post
 
+headers = [
+  {"Content-Type", "application/json"},
+  {"Authorization", "Bearer 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"}
+]
+
+body =
+  Jason.encode!(%{
+    model: "gpt-3.5-turbo",
+    messages: [%{role: "user", content: "Hello!"}]
+  })
+
+Finch.start_link(name: MyFirstTry.Finch)
+Finch.build(method, url, headers, body) |> Finch.request!(MyFirstTry.Finch)
 ```
 
 ## Commit Your Progress
