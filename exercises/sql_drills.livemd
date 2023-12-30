@@ -96,6 +96,10 @@ From the PostgreSQL prompt, connect to your `drills` database.
 
 ## SQL
 
+A
+
+<!-- livebook:{"break_markdown":true} -->
+
 From your PostgreSQL prompt, create an `authors` table. `authors` should have an `ID` primary key field, and a `NAME` `VARCHAR` field.
 Every fields should be `NOT NULL`.
 
@@ -112,7 +116,9 @@ CREATE TABLE authors (
 
 </details>
 
-<!-- livebook:{"break_markdown":true} -->
+```elixir
+
+```
 
 From your PostgreSQL prompt, create a `books` table. `books` should have a `TITLE` field up to `30` characters, and a `CONTENT` field of unlimited length. Both fields should be `NOT NULL`.
 
