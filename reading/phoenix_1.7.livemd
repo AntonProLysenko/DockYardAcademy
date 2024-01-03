@@ -200,7 +200,7 @@ Requests flow through the Plug Pipeline. The router, controller, component, and 
 
 <!-- livebook:{"break_markdown":true} -->
 
-### Router
+### Router .
 
 Phoenix generates a `router.ex` file that configures the URLs that clients can send HTTP requests to. See [Routing](https://hexdocs.pm/phoenix/routing.html) documentation for a full guide.
 

@@ -3,7 +3,7 @@
 ```elixir
 Mix.install([
   {:jason, "~> 1.4"},
-  {:kino, "~> 0.9", override: true},
+  # {:kino, "~> 0.9", override: true},
   {:youtube, github: "brooklinjazz/youtube"},
   {:hidden_cell, github: "brooklinjazz/hidden_cell"},
   {:finch, "~> 0.16.0"}
@@ -101,7 +101,7 @@ C--> S: close connection
 Below, we simulate a web server that accepts only a single request, and returns `"Hello, world!"` to the client. We then send the web server a request and receive a response.
 
 ```elixir
-port = 4000
+port = 3000
 
 spawn(fn ->
   # start socket
