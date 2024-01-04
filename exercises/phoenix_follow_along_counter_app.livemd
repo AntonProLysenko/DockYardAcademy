@@ -138,7 +138,7 @@ Create a `lib/counter_web/controllers/counter_html.ex` file with the following c
 defmodule CounterWeb.CounterHTML do
   use CounterWeb, :html
 
-  embed_templates "counter_html/*"
+  embed_templates "page_html/*"
 end
 ```
 
