@@ -96,6 +96,10 @@ end
 
 <!-- livebook:{"break_markdown":true} -->
 
+
+
+<!-- livebook:{"break_markdown":true} -->
+
 ### Context Functions
 
 Now that you've generated the `Posts` resource, start your project in the IEx shell to interact with the context programmatically.
